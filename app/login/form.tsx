@@ -14,7 +14,8 @@ export default function Form() {
         const response = await signIn('credentials', {
             email: formData.get('email'),
             password: formData.get('password'),
-            redirect: false,
+            redirect: true,
+            callbackUrl: '/'
         })
 
         if (response?.error) {

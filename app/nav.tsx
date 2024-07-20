@@ -1,10 +1,8 @@
 'use client';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation'
-import { signOut, useSession } from 'next-auth/react';
-
-export default function Nav() {
-    const { data: session } = useSession();
+import { signOut } from 'next-auth/react';
+export default function Nav({ session }: { session: boolean }) {
     const pathname = usePathname()
     const isActive = (path: string) => {
         return pathname === path;
