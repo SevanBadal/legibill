@@ -22,7 +22,7 @@ export default async function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
-        <Nav session={!!session}/>
+        <Nav session={!!session} />
         <div className='p-4 bg-gray-200 min-h-screen'>
           <Suspense fallback={<Loading />}>{children}</Suspense>
         </div>

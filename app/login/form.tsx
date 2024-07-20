@@ -14,22 +14,23 @@ export default function Form() {
         const response = await signIn('credentials', {
             email: formData.get('email'),
             password: formData.get('password'),
-            redirect: false,
+            redirect: true,
+            callbackUrl: '/'
         })
 
-   if (response?.error) {
-      {
-        setError("Invalid email/password.");
-      }
+        if (response?.error) {
+            {
+                setError("Invalid email/password.");
+            }
         }
     }
-    return(
+    return (
         <form onSubmit={handleSubmit} className="flex flex-col gap-2 mx-auto max-w-md">
             <h1 className="text-xl">Login to an existing Account</h1>
             <label>Email</label>
-            <input name="email" className="border border-black" type="email" required={true}/>
+            <input name="email" className="border border-black" type="email" required={true} />
             <label>Password</label>
-            <input name="password" className="border border-black"  type="password" required={true}/>
+            <input name="password" className="border border-black" type="password" required={true} />
             {error && <p className="text-red-500">{error}</p>}
             <button type="submit">Submit</button>
         </form>
