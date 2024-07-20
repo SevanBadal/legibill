@@ -22,8 +22,6 @@ export default function Form() {
             {
                 setError("Invalid email/password.");
             }
-        } else {
-            router.push('/');
         }
     }
     return (
