@@ -17,7 +17,7 @@ export async function GET(request: Request, context: any) {
 
         const response = await fetch(`https://api.legiscan.com/?key=${legiscanApiKey}&op=getMasterList&state=${location}&year=${year}`);
         const data = await response.json();
-      
+
         const transformedData = transformData(data);
         return NextResponse.json({
             count: transformedData.length,
