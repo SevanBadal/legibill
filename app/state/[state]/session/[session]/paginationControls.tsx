@@ -3,6 +3,7 @@ import Link from 'next/link';
 import PaginationControlsProps from '@/data/paginationControlsProps';
 
 const PaginationControls: FC<PaginationControlsProps> = ({ currentPage, totalPages }) => {
+
   return (
     <div className="pagination-controls flex justify-center items-center mt-10 mb-10 space-x-12">
       <Link href={`?page=${currentPage - 1}`}>
