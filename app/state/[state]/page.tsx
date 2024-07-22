@@ -2,7 +2,7 @@ import Session from "@/data/sessions";
 import Link from "next/link";
 
 async function getSessionList(stateAbbreviation: string) {
-  const legiscanApiKey = process.env.LEGI_KEY; 
+  const legiscanApiKey = process.env.LEGI_KEY;
   const res = await fetch(`https://api.legiscan.com/?key=${legiscanApiKey}&op=getSessionList&state=${stateAbbreviation}`);
   const data = await res.json();
 
@@ -22,7 +22,7 @@ export default async function Page({ params }: { params: { state: string } }) {
     <div>
       <h1 className="mt-2 text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">{params.state} session data</h1>
       <ul role="list" className="mt-3 grid grid-cols-1 gap-5 sm:grid-cols-2 sm:gap-6 lg:grid-cols-4">
-      {sessionData.map((session: Session, index: number) => (
+        {sessionData.map((session: Session, index: number) => (
           <li key={session.session_id} className="py-4">
             <Link href={`/state/${params.state}/session/${session.session_id}`}>
               <div className="border rounded-lg p-4 shadow-sm hover:bg-gray-900 hover:text-gray-200 transition-colors">
@@ -38,9 +38,9 @@ export default async function Page({ params }: { params: { state: string } }) {
                 <p><strong>Session Hash:</strong> {session.session_hash}</p>
               </div>
             </Link>
-        </li>
-      ))}
-    </ul>
+          </li>
+        ))}
+      </ul>
     </div>
   );
 }
