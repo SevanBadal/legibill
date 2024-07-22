@@ -1,7 +1,7 @@
 import { Suspense } from 'react';
 import Loading from './loading';
 import Session from '@/data/sessions';
-import SessionPeopleResponse from '@/data/SessionPeopleResponse';
+import SessionPeopleResponse from '@/data/sessionPeopleResponse';
 
 async function getSessionData(sessionID: number): Promise<any> {
   try {
