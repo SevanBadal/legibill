@@ -1,7 +1,4 @@
 // app/api/bills/[location].ts
-import { NextResponse } from 'next/server';
-import transformData from '@/utilities/transformMasterList';
-
 export async function GET(request: Request, context: any) {
   const { params } = context
   const location = params?.location
