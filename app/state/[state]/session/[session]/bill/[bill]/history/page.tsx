@@ -28,7 +28,7 @@ export default async function Page({
 
   return (
     <>
-      <div className="flex justify-center space-x-12 mt-6 text-lg">
+      <div className="flex justify-center space-x-12 mb-10 text-lg">
         <Link href={`/state/${params.state}/session/${params.session}/bill/${bill.bill_id}/history`}>
           <p className="text-blue-900  underline cursor-pointer font-semibold">History</p>
         </Link>
@@ -52,7 +52,7 @@ export default async function Page({
             </li>
           ))
         ) : (
-          <li className="col-span-full text-center">No history.</li>
+          <li className="border rounded-lg p-4 shadow-sm bg-white">No history.</li>
         )}
       </ul>
     </>
