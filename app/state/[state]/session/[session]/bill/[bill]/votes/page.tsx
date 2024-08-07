@@ -33,7 +33,7 @@ export default async function Page({
           <p className="cursor-pointer font-semibold">History</p>
         </Link>
         <Link href={`/state/${params.state}/session/${params.session}/bill/${bill.bill_id}/votes`}>
-          <p className="text-blue-900 font-semibold underline cursor-pointer">Votes</p>
+          <p className="text-blue-600 font-semibold underline cursor-pointer">Votes</p>
         </Link>
         <Link href={`/state/${params.state}/session/${params.session}/bill/${bill.bill_id}/sponsors`}>
           <p className="cursor-pointer font-semibold">Sponsors</p>

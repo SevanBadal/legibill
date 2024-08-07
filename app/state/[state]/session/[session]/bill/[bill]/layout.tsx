@@ -1,4 +1,4 @@
-
+import Link from "next/link";
 
 async function getBillData(billId: number): Promise<any> {
   try {
@@ -28,16 +28,19 @@ export default async function BillLayout({
   return (
     <>
       <div className="border rounded-lg p-4 shadow-sm ">
+        <Link href={`/state/${params.state}/session/${params.session}`}>
+          <p className=" cursor-pointer text-gray-700 mb-5"><span aria-hidden="true">&larr;</span> Back to Session Bills</p>
+        </Link>
         <p className="font-bold text-xl">{bill.title}</p>
         <p className="my-4">{params.state} {bill.session.session_title}</p>
         <p> {bill.description} </p>
 
         <div className="flex space-x-10 my-4">
-          <p className=" font-semibold leading-6 text-blue-900">
+          <p className=" font-semibold leading-6 text-blue-600">
             Save <span aria-hidden="true">☆</span>
           </p>
           <a
-            className=" font-semibold leading-6 text-blue-900"
+            className=" font-semibold leading-6 text-blue-600"
             href={bill.url} target="_blank" rel="noopener noreferrer">
             View Bill <span aria-hidden="true">&rarr;</span>
           </a>

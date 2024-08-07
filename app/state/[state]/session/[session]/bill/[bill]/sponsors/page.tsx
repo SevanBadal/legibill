@@ -36,7 +36,7 @@ export default async function Page({
           <p className=" font-semibold cursor-pointer">Votes</p>
         </Link>
         <Link href={`/state/${params.state}/session/${params.session}/bill/${bill.bill_id}/sponsors`}>
-          <p className="text-blue-900  underline cursor-pointer font-semibold">Sponsors</p>
+          <p className="text-blue-600  underline cursor-pointer font-semibold">Sponsors</p>
         </Link>
       </div>
 
@@ -47,7 +47,7 @@ export default async function Page({
               <div className="border rounded-lg p-4 shadow-sm bg-white">
                 <p className='line-clamp-1'><strong>{sponsor.role}. {sponsor.name} ({sponsor.party})</strong></p>
                 <p className='line-clamp-1'><strong>District:</strong> {sponsor.district}</p>
-                <p className=" font-semibold leading-6 text-blue-900">
+                <p className=" font-semibold leading-6 text-blue-600">
                   Save <span aria-hidden="true">☆</span>
                 </p>
               </div>

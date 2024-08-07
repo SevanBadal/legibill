@@ -30,7 +30,7 @@ export default async function Page({
     <>
       <div className="flex justify-center space-x-12 mb-10 text-lg">
         <Link href={`/state/${params.state}/session/${params.session}/bill/${bill.bill_id}/history`}>
-          <p className="text-blue-900  underline cursor-pointer font-semibold">History</p>
+          <p className="text-blue-600  underline cursor-pointer font-semibold">History</p>
         </Link>
         <Link href={`/state/${params.state}/session/${params.session}/bill/${bill.bill_id}/votes`}>
           <p className=" font-semibold cursor-pointer">Votes</p>
