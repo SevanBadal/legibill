@@ -1,7 +1,9 @@
 import NextAuth from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import { compare } from "bcrypt";
-import { sql } from "@vercel/postgres";
+import { PrismaClient } from "@prisma/client";
+
+const prisma = new PrismaClient();
 
 const handler = NextAuth({
     session: {
@@ -18,14 +20,21 @@ const handler = NextAuth({
               password: {}
             },
             async authorize(credentials, request) {
-              const response = await sql`SELECT * FROM users WHERE email=${credentials?.email}`
-              const user = response.rows[0]
-              const passwordCorrect = await compare(credentials?.password || "", user.password)
-              if (passwordCorrect) {
-                return {
-                  id: user.id,
-                  email: user.email
+              if (!credentials?.email || !credentials?.password) {
+                return null;
+              }
+
+              const user = await prisma.users.findUnique({
+                where: {
+                  email: credentials.email
                 }
+              });
+
+              if (user && await compare(credentials.password, user.password)) {
+                return {
+                  id: user.id.toString(),
+                  email: user.email
+                };
               }
               // Return null if user data could not be retrieved
               return null
