@@ -9,7 +9,20 @@ datasource db {
 }
 
 model users {
-  id       Int    @id @default(autoincrement())
-  email    String @unique(map: "unique_email")
-  password String
+  id          Int    @id @default(autoincrement())
+  email       String @unique(map: "unique_email")
+  password    String
+  savedBills  savedBill[]
+}
+
+model savedBill {
+  id                  Int     @id @default(autoincrement())
+  userId              Int
+  legiscanBillId      Int
+  title               String
+  description         String
+  state               String
+  sessionTitle        String
+  changeHash          String
+  user                users   @relation(fields: [userId], references: [id])
 }
