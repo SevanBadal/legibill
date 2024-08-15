@@ -26,6 +26,7 @@ export async function POST(request: Request) {
         description,
         state,
         sessionTitle,
+        // sessionId,
         changeHash,
       },
     });
