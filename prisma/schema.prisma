@@ -23,6 +23,7 @@ model savedBill {
   description         String
   state               String
   sessionTitle        String
+  sessionId           Int
   changeHash          String
   user                users   @relation(fields: [userId], references: [id])
 }

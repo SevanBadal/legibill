@@ -1,9 +1,6 @@
-import {hash} from "bcrypt";
+import { hash } from "bcrypt";
 import { NextResponse } from "next/server";
-import { PrismaClient } from '@prisma/client';
-
-const prisma = new PrismaClient();
-
+import prisma from "@/app/prismaClient";
 
 export async function POST(request: Request) {
     try {
@@ -43,7 +40,8 @@ export async function POST(request: Request) {
             { error: 'An error occurred while processing your request.' },
             { status: 500 }
         );
-    } finally {
-        await prisma.$disconnect();
     }
+    // } finally {
+    //     await prisma.$disconnect();
+    // }
 }

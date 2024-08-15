@@ -1,4 +1,5 @@
 import Link from "next/link";
+import SaveButton from "./saveButton";
 
 async function getBillData(billId: number): Promise<any> {
   try {
@@ -36,20 +37,16 @@ export default async function BillLayout({
         <p> {bill.description} </p>
 
         <div className="flex space-x-10 my-4">
-          <p className=" font-semibold leading-6 text-blue-600">
-            Save <span aria-hidden="true">☆</span>
-          </p>
+          <SaveButton
+            bill={bill}
+          />
           <a
             className=" font-semibold leading-6 text-blue-600"
             href={bill.url} target="_blank" rel="noopener noreferrer">
             View Bill <span aria-hidden="true">&rarr;</span>
           </a>
         </div>
-
       </div>
-
-
-
 
       <div className='p-4 bg-gray-200 min-h-screen'>
         {children}

@@ -1,46 +1,60 @@
-import NextAuth from "next-auth";
+import NextAuth, { NextAuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import { compare } from "bcrypt";
-import { PrismaClient } from "@prisma/client";
+import prisma from "@/app/prismaClient";
 
-const prisma = new PrismaClient();
+export const authOptions: NextAuthOptions = {
+  session: {
+    strategy: 'jwt'
+  },
+  pages: {
+    signIn: "/login"
+  },
+  providers: [
+    CredentialsProvider({
+      name: 'Credentials',
+      credentials: {
+        email: {},
+        password: {}
+      },
+      async authorize(credentials) {
+        if (!credentials?.email || !credentials?.password) {
+          return null;
+        }
 
-const handler = NextAuth({
-    session: {
-      strategy: 'jwt'
+        const user = await prisma.users.findUnique({
+          where: {
+            email: credentials.email
+          }
+        });
+
+        if (user && await compare(credentials.password, user.password)) {
+          return {
+            id: user.id,
+            email: user.email
+          };
+        }
+        return null;
+      }
+    })
+  ],
+  callbacks: {
+    async jwt({ token, user }) {
+      if (user) {
+        token.id = Number(user.id);
+        token.email = user.email;
+      }
+      return token;
     },
-    pages: {
-      signIn: "/login"
-    },
-    providers: [
-        CredentialsProvider({
-            name: 'Credentials',
-            credentials: {
-              email: {},
-              password: {}
-            },
-            async authorize(credentials, request) {
-              if (!credentials?.email || !credentials?.password) {
-                return null;
-              }
+    async session({ session, token }) {
+      if (session.user) {
+        session.user.id = token.id;
+        session.user.email = token.email;
+      }
+      return session;
+    }
+  }
+};
 
-              const user = await prisma.users.findUnique({
-                where: {
-                  email: credentials.email
-                }
-              });
-
-              if (user && await compare(credentials.password, user.password)) {
-                return {
-                  id: user.id.toString(),
-                  email: user.email
-                };
-              }
-              // Return null if user data could not be retrieved
-              return null
-            }
-          })
-    ]
-})
-
-export { handler as GET, handler as POST }
+// Default export for NextAuth API route
+export default NextAuth(authOptions);
