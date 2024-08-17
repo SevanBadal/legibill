@@ -48,7 +48,7 @@ const SavedBillsPage: FC = () => {
                                 />
                                 <Link
                                     className=" font-semibold leading-6 text-blue-600"
-                                    href={`/state/${bill.state}/session/${bill.session}/bill/${bill.legiscanBillId}/history`}>
+                                    href={`/state/${bill.state}/session/${bill.sessionId}/bill/${bill.legiscanBillId}/history`}>
                                     View Bill <span aria-hidden="true">&rarr;</span>
                                 </Link>
                             </div>

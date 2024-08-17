@@ -12,7 +12,7 @@ export async function POST(request: Request) {
     return NextResponse.json({ message: 'Unauthorized' }, { status: 401 });
   }
 
-  const { legiscanBillId, title, description, state, sessionTitle, changeHash } = await request.json();
+  const { legiscanBillId, title, description, state, sessionTitle, changeHash, sessionId } = await request.json();
   const userId = session.user.id;
 
   console.log('legiscanBillId', legiscanBillId)
@@ -26,7 +26,7 @@ export async function POST(request: Request) {
         description,
         state,
         sessionTitle,
-        // sessionId,
+        sessionId,
         changeHash,
       },
     });
