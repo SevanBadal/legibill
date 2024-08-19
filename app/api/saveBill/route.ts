@@ -6,16 +6,12 @@ import authOptions from '@/utilities/auth';
 export async function POST(request: Request) {
   const session = await getServerSession(authOptions);
 
-  console.log('Session:', session);
-
   if (!session?.user) {
     return NextResponse.json({ message: 'Unauthorized' }, { status: 401 });
   }
 
   const { legiscanBillId, title, description, state, sessionTitle, changeHash, sessionId } = await request.json();
   const userId = session.user.id;
-
-  console.log('legiscanBillId', legiscanBillId)
 
   try {
     const savedBill = await prisma.savedBill.create({

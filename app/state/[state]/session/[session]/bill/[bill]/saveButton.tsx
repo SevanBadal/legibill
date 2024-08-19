@@ -15,14 +15,11 @@ const SaveButton: FC<SaveButtonProps> = ({ bill }) => {
 
     const fetchIsSaved = async () => {
       try {
-        console.log('Checking if bill is saved...');
         const response = await fetch(`/api/checkSavedBill?legiscanBillId=${legiscanBillId}`);
         const result = await response.json();
-        console.log('Check result:', result);
         if (result.savedBill) {
           setIsSaved(true);
           setSavedBillId(result.savedBill.id); // Save the id for unsaving later
-          console.log('Bill is saved:', result.savedBill.id);
         }
       } catch (error) {
         console.error('Error checking if bill is saved:', error);
@@ -43,7 +40,6 @@ const SaveButton: FC<SaveButtonProps> = ({ bill }) => {
     try {
       // Optimistically update the state before the async operation
       setIsSaved(!isSaved);
-      console.log('Toggling save state...');
 
       if (isSaved && savedBillId) {
         // If the bill is saved, should remove it
@@ -61,7 +57,6 @@ const SaveButton: FC<SaveButtonProps> = ({ bill }) => {
           console.error('Failed to unsave bill');
         } else {
           setSavedBillId(null); // Clear the saved bill ID
-          console.log('Bill unsaved successfully');
         }
       } else {
         // If the bill is not saved, save it
@@ -89,7 +84,6 @@ const SaveButton: FC<SaveButtonProps> = ({ bill }) => {
           console.error('Failed to save bill');
         } else {
           setSavedBillId(result.savedBill.id); // Save the bill ID
-          console.log('Bill saved successfully:', result.savedBill.id);
         }
       }
     } catch (error) {

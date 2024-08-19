@@ -13,7 +13,6 @@ const SavedBillsPage: FC = () => {
             try {
                 const response = await fetch('/api/savedBills');
                 const result = await response.json();
-                console.log('Fetched saved bills:', result.savedBills);
                 setSavedBills(result.savedBills);
             } catch (error) {
                 console.error('Error fetching saved bills:', error);
