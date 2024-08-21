@@ -9,6 +9,9 @@ export default interface SaveButtonProps {
       session_title?: string;
       session_id?: number;
     };
-    change_hash: string;
+    sessionTitle?: string;
+    sessionId?: number;
+    change_hash?: string;
+    changeHash?: string;
   };
 }

@@ -7,6 +7,7 @@ const SaveButton: FC<SaveButtonProps> = ({ bill }) => {
   const [isSaved, setIsSaved] = useState(false);
   const [savedBillId, setSavedBillId] = useState<number | null>(null);
   const [loading, setLoading] = useState(true);
+  const [isProcessing, setIsProcessing] = useState(false);
 
   const legiscanBillId = bill.bill_id || bill.legiscanBillId;
 
@@ -32,16 +33,19 @@ const SaveButton: FC<SaveButtonProps> = ({ bill }) => {
   }, [bill]);
 
   const handleClick = async () => {
-    if (!bill) {
-      console.error('Bill object is undefined');
+    if (isProcessing || !bill) {
       return;
     }
 
+    setIsProcessing(true); // Block further requests until this one is done
+
     try {
-      // Optimistically update the state before the async operation
+      const currentSavedState = isSaved;
+
+      // Optimistically update the state
       setIsSaved(!isSaved);
 
-      if (isSaved && savedBillId) {
+      if (currentSavedState && savedBillId) {
         // If the bill is saved, should remove it
         const response = await fetch('/api/unsaveBill', {
           method: 'DELETE',
@@ -52,42 +56,44 @@ const SaveButton: FC<SaveButtonProps> = ({ bill }) => {
         });
 
         if (!response.ok) {
-          // If the request fails, revert the state
-          setIsSaved(true);
+          // If the unsave operation fails, revert the UI state
+          setIsSaved(currentSavedState);
           console.error('Failed to unsave bill');
         } else {
           setSavedBillId(null); // Clear the saved bill ID
         }
       } else {
         // If the bill is not saved, save it
+        console.log('bill', bill)
         const response = await fetch('/api/saveBill', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
           },
           body: JSON.stringify({
-            legiscanBillId: bill.bill_id,
+            legiscanBillId: bill.legiscanBillId || bill.bill_id,
             title: bill.title,
             description: bill.description,
             state: bill.state,
-            sessionTitle: bill.session?.session_title ?? 'Unknown Session',
-            sessionId: bill.session?.session_id ?? 0,
-            changeHash: bill.change_hash,
+            sessionTitle: bill.sessionTitle || bill.session?.session_title,
+            sessionId: bill.sessionId || bill.session?.session_id,
+            changeHash: bill.changeHash || bill.change_hash,
           }),
         });
 
-        const result = await response.json();
-
         if (!response.ok) {
-          // If the request fails, revert the state
-          setIsSaved(false);
+          // If the save operation fails, revert the UI state
+          setIsSaved(currentSavedState);
           console.error('Failed to save bill');
         } else {
+          const result = await response.json();
           setSavedBillId(result.savedBill.id); // Save the bill ID
         }
       }
     } catch (error) {
       console.error('Error handling save/unsave:', error);
+    } finally {
+      setIsProcessing(false); // Allow further requests
     }
   };
 
