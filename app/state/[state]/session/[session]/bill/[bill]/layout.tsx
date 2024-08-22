@@ -1,5 +1,5 @@
 import Link from "next/link";
-import SaveButton from "./saveButton";
+import SaveButton from "./billSaveButton";
 
 async function getBillData(billId: number): Promise<any> {
   try {
