@@ -10,4 +10,9 @@ export default interface getSearchBill {
   last_action_date: string;
   last_action: string;
   title: string;
+  description: string;
+  session: {
+    session_title: string;
+    session_id: number;
+  };
 }

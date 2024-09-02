@@ -1,57 +1,51 @@
-import { NextResponse } from 'next/server';
-// import transformData from "@/utilities/transformMasterList";
-import transformData from "@/utilities/transformSearchResult";
-import getSearchBill from '@/data/getSearchBill';
-import Summary from '@/data/sessionSummary';
-import PaginationControls from './paginationControls';
+import { Suspense } from 'react';
+import Loading from './loading';
+import Session from '@/data/sessions';
+import SessionPeopleResponse from "@/data/sessionPeopleResponse";
+import SessionBills from './sessionBills';
 
-async function getSessionBills(sessionID: number, page: number): Promise<{ bills: getSearchBill[], summary: Summary }> {
+async function getSessionData(sessionID: number): Promise<any> {
+  try {
+    const legiscanApiKey = process.env.LEGI_KEY;
+    const res = await fetch(`https://api.legiscan.com/?key=${legiscanApiKey}&op=getSessionPeople&id=${sessionID}`);
+    const data = await res.json();
+    return data;
 
-    try {
-        const legiscanApiKey = process.env.LEGI_KEY;
-        const res = await fetch(`https://api.legiscan.com/?key=${legiscanApiKey}&op=getSearch&id=${sessionID}&page=${page}`);
-        const data = await res.json();
-
-        const transformedData = transformData(data);
-        return transformedData; // Return the transformed data directly
-
-    } catch (error) {
-        console.error(error);
-        return { bills: [], summary: {} as Summary }; // Return empty data in case of error
-    }
+  } catch (error) {
+    console.error(error);
+    return []; // Return an empty array in case of error
+  }
 }
 
+export default async function Page({ params, searchParams }: { params: { session: number, state: string }, searchParams: { page: string } }) {
 
+  const sessionData: SessionPeopleResponse = await getSessionData(params.session)
+  const session: Session = sessionData.sessionpeople.session
 
-export default async function Page({ params, searchParams }: { params: { session: number }, searchParams: { page: string } }) {
+  return (
+    <>
 
-    const currentPage = parseInt(searchParams.page || '1', 10);
-    const { bills, summary } = await getSessionBills(params.session, currentPage)
+      <div className="border rounded-lg p-4 shadow-sm bg-gray-900 text-gray-200 transition-colors">
+        <h2 className="text-lg font-semibold">{session.session_title}</h2>
+        <p><strong>Session Name:</strong> {session.session_name}</p>
+        <p><strong>Years:</strong> {session.year_start} - {session.year_end}</p>
+        <p><strong>Session Tag:</strong> {session.session_tag}</p>
+        <p><strong>Special Session:</strong> {session.special ? 'Yes' : 'No'}</p>
+        <p><strong>Prefile:</strong> {session.prefile ? 'Yes' : 'No'}</p>
+        <p><strong>Sine Die:</strong> {session.sine_die ? 'Yes' : 'No'}</p>
+        <p><strong>Prior:</strong> {session.prior ? 'Yes' : 'No'}</p>
+      </div>
 
-    return (
-        <>
-
-            <ul role="list" className="mt-3 grid grid-cols-1 gap-5 sm:grid-cols-2 sm:gap-6 lg:grid-cols-4">
-                {bills.map((bill: getSearchBill) => (
-                    <li key={bill.bill_id} className="py-4">
-                        <div className="border rounded-lg p-4 shadow-sm bg-white">
-                            <div className="border-b min-h-[4.5em] border-gray-200 py-2">
-                                <h3 className="line-clamp-2 text-base font-semibold leading-6 text-gray-900">{bill.title}</h3>
-                            </div>
-                            <p className='line-clamp-1'><strong>Bill Number:</strong> {bill.bill_number}</p>
-                            <p className='line-clamp-1'><strong>Last Action:</strong> {bill.last_action}</p>
-                            <p className='line-clamp-1'><strong>Last Action Date:</strong> {bill.last_action_date}</p>
-                            {/* <p className='line-clamp-1'><strong>Status Date:</strong> {bill.status_date}</p> */}
-                            {/* <p className="line-clamp-2 min-h-[3em]">{bill.description}</p>  */}
-                            {/* description and status date not accessible from getSearch */}
-                            <div className="mt-6 border-t border-gray-900/5 px-3 py-3">
-                                <a className="text-sm font-semibold leading-6 text-gray-900" href={bill.url} target="_blank" rel="noopener noreferrer">View Bill <span aria-hidden="true">&rarr;</span></a>
-                            </div>
-                        </div>
-                    </li>
-                ))}
-            </ul>
-            <PaginationControls currentPage={currentPage} totalPages={summary.page_total} />
-        </>
-    )
+      <div className='p-4 bg-gray-200 min-h-screen'>
+        <Suspense fallback={<Loading />}>
+          <SessionBills params={{
+            session: params.session,
+            state: params.state
+          }} searchParams={{
+            page: searchParams.page
+          }} />
+        </Suspense>
+      </div>
+    </>
+  )
 }
