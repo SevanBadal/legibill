@@ -3,7 +3,7 @@
 import { FC, useState, useEffect } from 'react';
 import SaveButtonProps from '@/data/saveButtonProps';
 
-const SaveButton: FC<SaveButtonProps> = ({ bill }) => {
+const billSaveButton: FC<SaveButtonProps> = ({ bill }) => {
   const [isSaved, setIsSaved] = useState(false);
   const [savedBillId, setSavedBillId] = useState<number | null>(null);
   const [loading, setLoading] = useState(true);
@@ -64,7 +64,6 @@ const SaveButton: FC<SaveButtonProps> = ({ bill }) => {
         }
       } else {
         // If the bill is not saved, save it
-        console.log('bill', bill)
         const response = await fetch('/api/saveBill', {
           method: 'POST',
           headers: {
@@ -108,4 +107,4 @@ const SaveButton: FC<SaveButtonProps> = ({ bill }) => {
   );
 };
 
-export default SaveButton;
+export default billSaveButton;

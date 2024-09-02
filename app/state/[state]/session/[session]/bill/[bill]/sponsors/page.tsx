@@ -47,9 +47,14 @@ export default async function Page({
               <div className="border rounded-lg p-4 shadow-sm bg-white">
                 <p className='line-clamp-1'><strong>{sponsor.role}. {sponsor.name} ({sponsor.party})</strong></p>
                 <p className='line-clamp-1'><strong>District:</strong> {sponsor.district}</p>
-                <p className=" font-semibold leading-6 text-blue-600">
-                  Save <span aria-hidden="true">☆</span>
-                </p>
+                <div className="flex space-x-10 my-4">
+                  <p className=" font-semibold leading-6 text-blue-600">
+                    Save <span aria-hidden="true">☆</span>
+                  </p>
+                  <Link href={`/state/${params.state}/sponsor/${sponsor.people_id}/bills`}>
+                    <p className="text-blue-600 cursor-pointer font-semibold"> View Sponsor <span aria-hidden="true">&rarr;</span></p>
+                  </Link>
+                </div>
               </div>
             </li>
           ))

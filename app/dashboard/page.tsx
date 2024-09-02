@@ -1,7 +1,7 @@
 'use client'
 
 import { FC, useEffect, useState } from 'react';
-import SaveButton from '../state/[state]/session/[session]/bill/[bill]/saveButton';
+import SaveButton from '../state/[state]/session/[session]/bill/[bill]/billSaveButton';
 import Link from 'next/link';
 
 const SavedBillsPage: FC = () => {
