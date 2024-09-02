@@ -3,7 +3,7 @@
 import { FC, useEffect, useState } from 'react';
 
 import Link from 'next/link';
-import BillSaveButton from '../state/[state]/session/[session]/bill/[bill]/billSaveButton';
+import BillSaveButton from '../state/[state]/session/[session]/bill/[bill]/BillSaveButton';
 
 const SavedBillsPage: FC = () => {
     const [savedBills, setSavedBills] = useState<Array<any>>([]);
@@ -43,7 +43,7 @@ const SavedBillsPage: FC = () => {
                             <p>{bill.description}</p>
 
                             <div className="flex space-x-10 my-4">
-                                <SaveButton
+                                <BillSaveButton
                                     bill={bill}
                                 />
                                 <Link

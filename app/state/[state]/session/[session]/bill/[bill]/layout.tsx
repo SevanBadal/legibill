@@ -1,4 +1,5 @@
 import Link from "next/link";
+import BillSaveButton from "./BillSaveButton";
 
 async function getBillData(billId: number): Promise<any> {
   try {
@@ -36,7 +37,7 @@ export default async function BillLayout({
         <p> {bill.description} </p>
 
         <div className="flex space-x-10 my-4">
-          <SaveButton
+          <BillSaveButton
             bill={bill}
           />
           <a
