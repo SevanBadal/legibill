@@ -1,8 +1,9 @@
 'use client'
 
 import { FC, useEffect, useState } from 'react';
-import SaveButton from '../state/[state]/session/[session]/bill/[bill]/billSaveButton';
+
 import Link from 'next/link';
+import BillSaveButton from '../state/[state]/session/[session]/bill/[bill]/billSaveButton';
 
 const SavedBillsPage: FC = () => {
     const [savedBills, setSavedBills] = useState<Array<any>>([]);
