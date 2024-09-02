@@ -8,7 +8,7 @@ async function getSessionData(sessionID: number): Promise<any> {
   try {
     console.log("Pre Fetching data: ", sessionID)
     const legiscanApiKey = process.env.LEGI_KEY;
-    const res = await fetch(`https://api.legiscan.com/?key=${legiscanApiKey}&op=getSessionPeople&id=${sessionID}`,{ cache: 'no-store' });
+    const res = await fetch(`https://api.legiscan.com/?key=${legiscanApiKey}&op=getSessionPeople&id=${sessionID}`);
     const data = await res.json();
     return data;
 
