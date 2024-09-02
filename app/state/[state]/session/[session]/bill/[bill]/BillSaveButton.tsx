@@ -3,7 +3,7 @@
 import { FC, useState, useEffect } from 'react';
 import SaveButtonProps from '@/data/saveButtonProps';
 
-const billSaveButton: FC<SaveButtonProps> = ({ bill }) => {
+const BillSaveButton: FC<SaveButtonProps> = ({ bill }) => {
   const [isSaved, setIsSaved] = useState(false);
   const [savedBillId, setSavedBillId] = useState<number | null>(null);
   const [loading, setLoading] = useState(true);
@@ -107,4 +107,4 @@ const billSaveButton: FC<SaveButtonProps> = ({ bill }) => {
   );
 };
 
-export default billSaveButton;
+export default BillSaveButton;
