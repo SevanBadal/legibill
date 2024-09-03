@@ -6,7 +6,14 @@ import SessionBills from './sessionBills';
 
 async function getSessionData(sessionID: number): Promise<any> {
   try {
-    console.log("Pre Fetching data: ", sessionID)
+    if (!sessionID || typeof sessionID !== 'number') {
+      console.error('Invalid session id');
+      throw new Error('Invalid session id');
+    }
+
+    console.log('Fetching data');
+
+
     const legiscanApiKey = process.env.LEGI_KEY;
     const res = await fetch(`https://api.legiscan.com/?key=${legiscanApiKey}&op=getSessionPeople&id=${sessionID}`);
     const data = await res.json();
