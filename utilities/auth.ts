@@ -29,7 +29,7 @@ const authOptions: NextAuthOptions = {
           }
         });
 
-        if (user && await compare(credentials.password, user.password)) {
+        if (user && user.password && await compare(credentials.password, user.password)) {
           return {
             id: user.id,
             email: user.email
@@ -51,7 +51,7 @@ const authOptions: NextAuthOptions = {
           // Create a new user in the database
           const newUser = await prisma.users.create({
             data: {
-              email: profile.email,
+              email: profile.email
             }
           });
           return { id: newUser.id, email: newUser.email };

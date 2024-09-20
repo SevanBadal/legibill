@@ -3,6 +3,7 @@
 import { FormEvent, useState } from "react"
 import { signIn } from "next-auth/react"
 import { useRouter } from "next/navigation"
+import GoogleSignInButton from "../components/GoogleSignInButton"
 
 export default function Form() {
     const router = useRouter()
@@ -35,9 +36,7 @@ export default function Form() {
                 {error && <p className="text-red-500">{error}</p>}
                 <button type="submit">Submit</button>
             </form>
-            <button onClick={() => signIn("google")}>
-                Sign in with Google
-            </button>
+            <GoogleSignInButton />
         </>
     )
 }
