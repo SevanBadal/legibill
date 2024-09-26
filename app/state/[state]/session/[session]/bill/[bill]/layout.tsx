@@ -1,8 +1,15 @@
 import Link from "next/link";
-import BillSaveButton from "./BillSaveButton";
+import BillSaveButton from "../../../../../../components/BillSaveButton";
 
 async function getBillData(billId: number): Promise<any> {
   try {
+    if (!billId || typeof billId !== 'number') {
+      console.error('Invalid bill id');
+      throw new Error('Invalid bill id');
+    }
+
+    console.log('Fetching data');
+
     const legiscanApiKey = process.env.LEGI_KEY;
     const res = await fetch(`https://api.legiscan.com/?key=${legiscanApiKey}&op=getBill&id=${billId}`);
     const data = await res.json();

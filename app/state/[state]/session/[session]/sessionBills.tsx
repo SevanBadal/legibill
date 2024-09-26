@@ -7,6 +7,18 @@ import Link from "next/link";
 async function getSessionBills(sessionID: number, page: number): Promise<{ bills: getSearchBill[], summary: Summary }> {
 
     try {
+        if (!sessionID || typeof sessionID !== 'number') {
+            console.error('Invalid session id');
+            throw new Error('Invalid session id');
+        }
+
+        if (!page || typeof page !== 'number') {
+            console.error('Invalid page');
+            throw new Error('Invalid page');
+        }
+
+        console.log('Fetching data');
+
         const legiscanApiKey = process.env.LEGI_KEY;
         const res = await fetch(`https://api.legiscan.com/?key=${legiscanApiKey}&op=getSearch&id=${sessionID}&page=${page}`);
         const data = await res.json();

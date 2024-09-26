@@ -3,6 +3,14 @@ import Link from "next/link";
 
 async function getSessionList(stateAbbreviation: string) {
   const legiscanApiKey = process.env.LEGI_KEY;
+
+  if (!stateAbbreviation || typeof stateAbbreviation !== 'string') {
+    console.error('Invalid state abbreviation');
+    throw new Error('Invalid state abbreviation');
+  }
+
+  console.log('Fetching data');
+
   const res = await fetch(`https://api.legiscan.com/?key=${legiscanApiKey}&op=getSessionList&state=${stateAbbreviation}`);
   const data = await res.json();
 
