@@ -3,6 +3,7 @@
 import { FormEvent } from "react"
 import { useRouter } from "next/navigation"
 import { useState } from "react";
+import GoogleSignInButton from "../components/GoogleSignInButton";
 
 export default function Form() {
     const router = useRouter()
@@ -19,26 +20,27 @@ export default function Form() {
             })
         })
 
-    if (response.ok) {
-        router.push("/login");
+        if (response.ok) {
+            router.push("/login");
         } else {
-          const data = await response.json();
-          if (data?.error) {
-            setErrorMessage(data.error); // Set error message from API response
-          }
+            const data = await response.json();
+            if (data?.error) {
+                setErrorMessage(data.error); // Set error message from API response
+            }
         }
     }
-    return(
+    return (
         <>
             <form onSubmit={handleSubmit} className="flex flex-col gap-2 mx-auto max-w-md">
                 <h1 className="text-xl">Register an Account</h1>
                 <label>Email</label>
-                <input name="email" className="border border-black" type="email" required={true}/>
+                <input name="email" className="border border-black" type="email" required={true} />
                 <label>Password</label>
-                <input name="password" className="border border-black"  type="password" required={true}/>
+                <input name="password" className="border border-black" type="password" required={true} />
                 {errorMessage && <p className="text-red-500">{errorMessage}</p>}
                 <button type="submit">Submit</button>
             </form>
+            <GoogleSignInButton />
         </>
     )
 }

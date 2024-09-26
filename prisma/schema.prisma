@@ -11,7 +11,7 @@ datasource db {
 model users {
   id          Int    @id @default(autoincrement())
   email       String @unique(map: "unique_email")
-  password    String
+  password    String?
   savedBills  savedBill[]
 }
 
