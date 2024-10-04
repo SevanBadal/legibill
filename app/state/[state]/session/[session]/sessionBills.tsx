@@ -4,31 +4,40 @@ import Summary from '@/data/sessionSummary';
 import PaginationControls from './paginationControls';
 import Link from "next/link";
 
-async function getSessionBills(sessionID: number, page: number): Promise<{ bills: getSearchBill[], summary: Summary }> {
-
+async function getSessionBills(sessionID: any, page: any): Promise<{ bills: getSearchBill[], summary: Summary }> {
     try {
-        if (!sessionID || typeof sessionID !== 'number') {
-            console.error('Invalid session id');
-            throw new Error('Invalid session id');
+        // Convert sessionID and page to numbers and validate
+        const numericSessionID = Number(sessionID)
+        const numericPage = Number(page)
+
+        // Check if sessionID is a valid number
+        if (isNaN(numericSessionID) || numericSessionID <= 0) {
+            console.error('Invalid session id:', sessionID)
+            throw new Error('Invalid session id')
         }
 
-        if (!page || typeof page !== 'number') {
-            console.error('Invalid page');
-            throw new Error('Invalid page');
+        // Check if page is a valid number
+        if (isNaN(numericPage) || numericPage <= 0) {
+            console.error('Invalid page:', page)
+            throw new Error('Invalid page')
         }
 
-        console.log('Fetching data');
+        console.log('Fetching data with sessionID:', numericSessionID, 'and page:', numericPage)
 
-        const legiscanApiKey = process.env.LEGI_KEY;
-        const res = await fetch(`https://api.legiscan.com/?key=${legiscanApiKey}&op=getSearch&id=${sessionID}&page=${page}`);
-        const data = await res.json();
+        const legiscanApiKey = process.env.LEGI_KEY
+        if (!legiscanApiKey) {
+            throw new Error('LegiScan API key is missing')
+        }
 
-        const transformedData = transformData(data);
-        return transformedData; // Return the transformed data directly
+        const res = await fetch(`https://api.legiscan.com/?key=${legiscanApiKey}&op=getSearch&id=${numericSessionID}&page=${numericPage}`)
+        const data = await res.json()
+
+        const transformedData = transformData(data)
+        return transformedData // Return the transformed data directly
 
     } catch (error) {
-        console.error(error);
-        return { bills: [], summary: {} as Summary }; // Return empty data in case of error
+        console.error('Error fetching session bills:', error)
+        return { bills: [], summary: {} as Summary } // Return empty data in case of error
     }
 }
 

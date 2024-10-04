@@ -1,27 +1,34 @@
-import { Suspense } from 'react';
-import Loading from './loading';
+import { Suspense } from 'react'
+import Loading from './loading'
 import Session from '@/data/sessions';
 import SessionPeopleResponse from "@/data/sessionPeopleResponse";
 import SessionBills from './sessionBills';
 
-async function getSessionData(sessionID: number): Promise<any> {
+async function getSessionData(sessionID: any): Promise<any> {
   try {
-    if (!sessionID || typeof sessionID !== 'number') {
-      console.error('Invalid session id');
-      throw new Error('Invalid session id');
+    // Convert sessionID to a number and check if it's a valid number
+    const numericSessionID = Number(sessionID)
+
+    if (isNaN(numericSessionID) || numericSessionID <= 0) {
+      console.error('Invalid session id:', sessionID)
+      throw new Error('Invalid session id')
     }
 
-    console.log('Fetching data');
+    console.log('Fetching data with sessionID:', numericSessionID)
 
+    const legiscanApiKey = process.env.LEGI_KEY
+    if (!legiscanApiKey) {
+      throw new Error('LegiScan API key is missing')
+    }
 
-    const legiscanApiKey = process.env.LEGI_KEY;
-    const res = await fetch(`https://api.legiscan.com/?key=${legiscanApiKey}&op=getSessionPeople&id=${sessionID}`);
-    const data = await res.json();
-    return data;
+    const res = await fetch(`https://api.legiscan.com/?key=${legiscanApiKey}&op=getSessionPeople&id=${numericSessionID}`)
+    const data = await res.json()
+
+    return data
 
   } catch (error) {
-    console.error(error);
-    return []; // Return an empty array in case of error
+    console.error('Error fetching session data:', error)
+    return [] // Return an empty array in case of error
   }
 }
 
