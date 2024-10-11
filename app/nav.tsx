@@ -5,7 +5,10 @@ import { signOut } from 'next-auth/react';
 export default function Nav({ session }: { session: boolean }) {
     const pathname = usePathname()
     const isActive = (path: string) => {
-        return pathname === path;
+        if (path === '/') {
+            return pathname === '/'; // Exact match for Home
+        }
+        return pathname.startsWith(path);
     };
     return (
         <nav className="bg-gray-900 p-4 text-gray-200 flex flex-row justify-between">

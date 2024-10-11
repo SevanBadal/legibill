@@ -1,5 +1,3 @@
-import Link from "next/link";
-
 async function getSponsorData(peopleId: number): Promise<any> {
   try {
     const legiscanApiKey = process.env.LEGI_KEY;
@@ -12,7 +10,7 @@ async function getSponsorData(peopleId: number): Promise<any> {
     console.error(error);
     return []; // Return an empty array in case of error
   }
-}
+};
 
 export default async function SponsorLayout({
   children,
@@ -22,8 +20,11 @@ export default async function SponsorLayout({
   params: { state: string, sponsor: string }
 }) {
 
-  const sponsorData = await getSponsorData(Number(params.sponsor))
-  const sponsor = sponsorData.sponsoredbills.sponsor
+  const sponsorData = await getSponsorData(Number(params.sponsor));
+  console.log('sponsorData', sponsorData);
+
+  const sponsor = sponsorData.sponsoredbills.sponsor;
+  console.log('sponsor', sponsor);
 
   return (
     <>
