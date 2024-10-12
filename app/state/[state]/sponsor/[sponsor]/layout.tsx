@@ -23,10 +23,7 @@ export default async function SponsorLayout({
 }) {
 
   const sponsorData = await getSponsorData(Number(params.sponsor));
-  console.log('sponsorData', sponsorData);
-
   const sponsor = sponsorData?.sponsoredbills?.sponsor;
-  console.log('sponsor', sponsor);
 
   return (
     <>

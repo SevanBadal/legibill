@@ -16,9 +16,7 @@ const SponsorSaveButton: FC<SaveButtonProps> = ({ sponsor }) => {
 
     const fetchIsSaved = async () => {
       try {
-        console.log('legiscanPeopleId', legiscanPeopleId);
         const response = await fetch(`/api/checkSavedSponsor?legiscanPeopleId=${legiscanPeopleId}`);
-        console.log('save btn res', response);
         const result = await response.json();
         if (result.savedSponsor) {
           setIsSaved(true);
