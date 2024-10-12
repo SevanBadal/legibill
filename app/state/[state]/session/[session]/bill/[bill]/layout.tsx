@@ -1,5 +1,5 @@
 import Link from "next/link";
-import BillSaveButton from "../../../../../../components/BillSaveButton";
+import BillSaveButton from "@/app/components/BillSaveButton";
 
 async function getBillData(billId: number): Promise<any> {
   try {

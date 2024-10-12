@@ -1,7 +1,7 @@
 'use client'
 
 import { FC, useState, useEffect } from 'react';
-import SaveButtonProps from '@/data/saveButtonProps';
+import SaveButtonProps from '@/data/billSaveButtonProps';
 
 const BillSaveButton: FC<SaveButtonProps> = ({ bill }) => {
   const [isSaved, setIsSaved] = useState(false);

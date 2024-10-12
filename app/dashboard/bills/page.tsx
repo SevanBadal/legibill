@@ -3,7 +3,7 @@
 import { FC, useEffect, useState } from 'react';
 
 import Link from 'next/link';
-import BillSaveButton from '../../components/BillSaveButton';
+import BillSaveButton from '@/app/components/BillSaveButton';
 
 const SavedBillsPage: FC = () => {
     const [savedBills, setSavedBills] = useState<Array<any>>([]);

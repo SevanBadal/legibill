@@ -34,7 +34,7 @@ model savedSponsor {
   userId           Int
   legiscanPeopleId Int
   personHash       String
-  stateId          String
+  stateId          Int
   party            String
   role             String
   name             String

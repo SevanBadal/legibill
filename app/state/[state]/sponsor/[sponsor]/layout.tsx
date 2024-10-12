@@ -1,3 +1,5 @@
+import SponsorSaveButton from "@/app/components/SponsorSaveButton";
+
 async function getSponsorData(peopleId: number): Promise<any> {
   try {
     const legiscanApiKey = process.env.LEGI_KEY;
@@ -23,18 +25,16 @@ export default async function SponsorLayout({
   const sponsorData = await getSponsorData(Number(params.sponsor));
   console.log('sponsorData', sponsorData);
 
-  const sponsor = sponsorData.sponsoredbills.sponsor;
+  const sponsor = sponsorData?.sponsoredbills?.sponsor;
   console.log('sponsor', sponsor);
 
   return (
     <>
       <div className="border rounded-lg p-4 shadow-sm ">
-        <p className="font-bold text-xl mb-2">{`${sponsor.role}. ${sponsor.name} (${sponsor.party})`}</p>
+        <p className="font-bold text-xl mb-2">{`${sponsor?.role}. ${sponsor?.name} (${sponsor?.party})`}</p>
         <p><strong>State:</strong> {params.state}</p>
-        <p> <strong>District:</strong> {sponsor.district} </p>
-        <p className=" font-semibold leading-6 text-blue-600">
-          Save <span aria-hidden="true">☆</span>
-        </p>
+        <p> <strong>District:</strong> {sponsor?.district} </p>
+        <SponsorSaveButton sponsor={sponsor} />
       </div>
 
       <div className='p-4 bg-gray-200 min-h-screen'>

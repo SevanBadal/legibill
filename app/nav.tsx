@@ -6,7 +6,7 @@ export default function Nav({ session }: { session: boolean }) {
     const pathname = usePathname()
     const isActive = (path: string) => {
         if (path === '/') {
-            return pathname === '/'; // Exact match for Home
+            return pathname === '/' || pathname.startsWith('/state');
         }
         return pathname.startsWith(path);
     };
