@@ -37,8 +37,8 @@ export default async function Page({
 }) {
 
   const sponsorData = await getSponsorData(Number(params.sponsor))
-  const sponsor = sponsorData.sponsoredbills.sponsor
-  const bills = sponsorData.sponsoredbills.bills
+  const sponsor = sponsorData?.sponsoredbills?.sponsor
+  const bills = sponsorData?.sponsoredbills?.bills
 
   const detailedBills = await Promise.all(
     bills.map(async (bill: any) => {
