@@ -12,7 +12,7 @@ const SavedBillsPage: FC = () => {
     useEffect(() => {
         const fetchSavedBills = async () => {
             try {
-                const response = await fetch('/api/savedBills');
+                const response = await fetch('/api/bills/savedBills');
                 const result = await response.json();
                 setSavedBills(result.savedBills);
             } catch (error) {

@@ -16,7 +16,7 @@ const SponsorSaveButton: FC<SaveButtonProps> = ({ sponsor }) => {
 
     const fetchIsSaved = async () => {
       try {
-        const response = await fetch(`/api/checkSavedSponsor?legiscanPeopleId=${legiscanPeopleId}`);
+        const response = await fetch(`/api/sponsors/checkSavedSponsor?legiscanPeopleId=${legiscanPeopleId}`);
         const result = await response.json();
         if (result.savedSponsor) {
           setIsSaved(true);
@@ -47,7 +47,7 @@ const SponsorSaveButton: FC<SaveButtonProps> = ({ sponsor }) => {
 
       if (currentSavedState && savedSponsorId) {
         // If the sponsor is saved, should remove it
-        const response = await fetch('/api/unsaveSponsor', {
+        const response = await fetch('/api/sponsors/unsaveSponsor', {
           method: 'DELETE',
           headers: {
             'Content-Type': 'application/json',
@@ -64,7 +64,7 @@ const SponsorSaveButton: FC<SaveButtonProps> = ({ sponsor }) => {
         }
       } else {
         // If the sponsor is not saved, save it
-        const response = await fetch('/api/saveSponsor', {
+        const response = await fetch('/api/sponsors/saveSponsor', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',

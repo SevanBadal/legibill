@@ -14,7 +14,7 @@ const SavedSponsorsPage: FC = () => {
   useEffect(() => {
     const fetchSavedSponsors = async () => {
       try {
-        const response = await fetch('/api/savedSponsors');
+        const response = await fetch('/api/sponsors/savedSponsors');
         const result = await response.json();
         setSavedSponsors(result.savedSponsors);
       } catch (error) {

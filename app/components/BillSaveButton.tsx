@@ -16,7 +16,7 @@ const BillSaveButton: FC<SaveButtonProps> = ({ bill }) => {
 
     const fetchIsSaved = async () => {
       try {
-        const response = await fetch(`/api/checkSavedBill?legiscanBillId=${legiscanBillId}`);
+        const response = await fetch(`/api/bills/checkSavedBill?legiscanBillId=${legiscanBillId}`);
         const result = await response.json();
         if (result.savedBill) {
           setIsSaved(true);
@@ -47,7 +47,7 @@ const BillSaveButton: FC<SaveButtonProps> = ({ bill }) => {
 
       if (currentSavedState && savedBillId) {
         // If the bill is saved, should remove it
-        const response = await fetch('/api/unsaveBill', {
+        const response = await fetch('/api/bills/unsaveBill', {
           method: 'DELETE',
           headers: {
             'Content-Type': 'application/json',
@@ -64,7 +64,7 @@ const BillSaveButton: FC<SaveButtonProps> = ({ bill }) => {
         }
       } else {
         // If the bill is not saved, save it
-        const response = await fetch('/api/saveBill', {
+        const response = await fetch('/api/bills/saveBill', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
