@@ -1,39 +1,39 @@
 'use client'
 
 import { FC, useState, useEffect } from 'react';
-import SaveButtonProps from '@/data/billSaveButtonProps';
+import SaveButtonProps from '@/data/sponsorSaveButtonProps';
 
-const BillSaveButton: FC<SaveButtonProps> = ({ bill }) => {
+const SponsorSaveButton: FC<SaveButtonProps> = ({ sponsor }) => {
   const [isSaved, setIsSaved] = useState(false);
-  const [savedBillId, setSavedBillId] = useState<number | null>(null);
+  const [savedSponsorId, setSavedSponsorId] = useState<number | null>(null);
   const [loading, setLoading] = useState(true);
   const [isProcessing, setIsProcessing] = useState(false);
 
-  const legiscanBillId = bill.bill_id || bill.legiscanBillId;
+  const legiscanPeopleId = sponsor.people_id || sponsor.legiscanPeopleId;
 
-  // Check if the bill is already saved when the component mounts
+  // Check if the sponsor is already saved when the component mounts
   useEffect(() => {
 
     const fetchIsSaved = async () => {
       try {
-        const response = await fetch(`/api/bills/checkSavedBill?legiscanBillId=${legiscanBillId}`);
+        const response = await fetch(`/api/sponsors/checkSavedSponsor?legiscanPeopleId=${legiscanPeopleId}`);
         const result = await response.json();
-        if (result.savedBill) {
+        if (result.savedSponsor) {
           setIsSaved(true);
-          setSavedBillId(result.savedBill.id); // Save the id for unsaving later
+          setSavedSponsorId(result.savedSponsor.id); // Save the id for unsaving later
         }
       } catch (error) {
-        console.error('Error checking if bill is saved:', error);
+        console.error('Error checking if sponsor is saved:', error);
       } finally {
         setLoading(false); // Ensure loading state is false regardless of success or error
       }
     };
 
     fetchIsSaved();
-  }, [bill]);
+  }, [sponsor]);
 
   const handleClick = async () => {
-    if (isProcessing || !bill) {
+    if (isProcessing || !sponsor) {
       return;
     }
 
@@ -45,48 +45,49 @@ const BillSaveButton: FC<SaveButtonProps> = ({ bill }) => {
       // Optimistically update the state
       setIsSaved(!isSaved);
 
-      if (currentSavedState && savedBillId) {
-        // If the bill is saved, should remove it
-        const response = await fetch('/api/bills/unsaveBill', {
+      if (currentSavedState && savedSponsorId) {
+        // If the sponsor is saved, should remove it
+        const response = await fetch('/api/sponsors/unsaveSponsor', {
           method: 'DELETE',
           headers: {
             'Content-Type': 'application/json',
           },
-          body: JSON.stringify({ id: savedBillId }),
+          body: JSON.stringify({ id: savedSponsorId }),
         });
 
         if (!response.ok) {
           // If the unsave operation fails, revert the UI state
           setIsSaved(currentSavedState);
-          console.error('Failed to unsave bill');
+          console.error('Failed to unsave sponsor');
         } else {
-          setSavedBillId(null); // Clear the saved bill ID
+          setSavedSponsorId(null); // Clear the saved sponsor ID
         }
       } else {
-        // If the bill is not saved, save it
-        const response = await fetch('/api/bills/saveBill', {
+        // If the sponsor is not saved, save it
+        const response = await fetch('/api/sponsors/saveSponsor', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
           },
           body: JSON.stringify({
-            legiscanBillId: bill.legiscanBillId || bill.bill_id,
-            title: bill.title,
-            description: bill.description,
-            state: bill.state,
-            sessionTitle: bill.sessionTitle || bill.session?.session_title,
-            sessionId: bill.sessionId || bill.session?.session_id,
-            changeHash: bill.changeHash || bill.change_hash,
+            legiscanPeopleId: sponsor.legiscanPeopleId || sponsor.people_id,
+            personHash: sponsor.personHash || sponsor.person_hash,
+            stateId: sponsor.stateId || sponsor.state_id,
+            party: sponsor.party,
+            role: sponsor.role,
+            name: sponsor.name,
+            suffix: sponsor.suffix,
+            district: sponsor.district,
           }),
         });
 
         if (!response.ok) {
           // If the save operation fails, revert the UI state
           setIsSaved(currentSavedState);
-          console.error('Failed to save bill');
+          console.error('Failed to save sponsor');
         } else {
           const result = await response.json();
-          setSavedBillId(result.savedBill.id); // Save the bill ID
+          setSavedSponsorId(result.savedSponsor.id); // Save the sponsor ID
         }
       }
     } catch (error) {
@@ -97,7 +98,7 @@ const BillSaveButton: FC<SaveButtonProps> = ({ bill }) => {
   };
 
   if (loading) {
-    return <p>Loading...</p>; // Show a loading state while checking if the bill is saved
+    return <p>Loading...</p>; // Show a loading state while checking if the sponsor is saved
   }
 
   return (
@@ -107,4 +108,4 @@ const BillSaveButton: FC<SaveButtonProps> = ({ bill }) => {
   );
 };
 
-export default BillSaveButton;
+export default SponsorSaveButton;
