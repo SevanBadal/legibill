@@ -1,9 +1,8 @@
-'use client';
+"use client";
 
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-
 
 export default function GoogleSignInButton() {
   const [isLoading, setLoading] = useState(false);
@@ -35,9 +34,7 @@ export default function GoogleSignInButton() {
         onClick={handleSignIn}
         disabled={isLoading}
       >
-        {isLoading && (
-          <div className="loader mr-4"></div>
-        )}
+        {isLoading && <div className="loader mr-4"></div>}
         Sign in with Google
       </button>
 
@@ -61,6 +58,5 @@ export default function GoogleSignInButton() {
         }
       `}</style>
     </div>
-  )
-
+  );
 }
