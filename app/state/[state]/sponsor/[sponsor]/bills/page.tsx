@@ -8,6 +8,8 @@ import {
 } from "@nextui-org/react";
 import NextLink from "next/link";
 
+export const maxDuration = 60;
+
 async function getSponsorData(peopleId: number): Promise<any> {
   try {
     const legiscanApiKey = process.env.LEGI_KEY;
@@ -23,18 +25,27 @@ async function getSponsorData(peopleId: number): Promise<any> {
   }
 }
 
-async function getBillData(billId: number): Promise<any> {
+async function getBillData(billId: number, retries = 3): Promise<any> {
   try {
     const legiscanApiKey = process.env.LEGI_KEY;
     const res = await fetch(
       `https://api.legiscan.com/?key=${legiscanApiKey}&op=getBill&id=${billId}`
     );
     const data = await res.json();
+    console.log("getbilldata", data);
 
     return data;
   } catch (error) {
-    console.error(error);
-    return []; // Return an empty array in case of error
+    if (retries > 0) {
+      console.warn(
+        `Retrying fetch for bill ${billId}, attempts left: ${retries}`
+      );
+      await new Promise((resolve) => setTimeout(resolve, 1000)); // Wait before retrying
+      return getBillData(billId, retries - 1);
+    } else {
+      console.error(`Failed to fetch bill ${billId} after multiple attempts.`);
+      return null;
+    }
   }
 }
 
