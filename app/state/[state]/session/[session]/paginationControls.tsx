@@ -1,33 +1,37 @@
-import { FC } from 'react'
-import Link from 'next/link';
-import PaginationControlsProps from '@/data/paginationControlsProps';
+import { FC } from "react";
+import Link from "next/link";
+import PaginationControlsProps from "@/data/paginationControlsProps";
+import { Button } from "@nextui-org/react";
 
-const PaginationControls: FC<PaginationControlsProps> = ({ currentPage, totalPages }) => {
-
+const PaginationControls: FC<PaginationControlsProps> = ({
+  currentPage,
+  totalPages,
+}) => {
   return (
     <div className="pagination-controls flex justify-center items-center mt-10 mb-10 space-x-12">
       <Link href={`?page=${currentPage - 1}`}>
         <button
           disabled={currentPage === 1}
-          className={`px-4 py-2 rounded-md transition-colors ${currentPage === 1
-            ? 'hidden'
-            : 'bg-gray-900 text-gray-200 hover:bg-gray-400 hover:text-black'
-            }`}
+          className={`px-4 py-2 rounded-md transition-colors ${
+            currentPage === 1
+              ? "hidden"
+              : "bg-gray-900 text-gray-200 hover:bg-gray-400 hover:text-black"
+          }`}
         >
           Previous
         </button>
       </Link>
-      <span>Page {currentPage} of {totalPages}</span>
+      <span>
+        Page {currentPage} of {totalPages}
+      </span>
       <Link href={`?page=${currentPage + 1}`}>
-        <button
+        <Button
           disabled={currentPage === totalPages}
-          className={`px-4 py-2 rounded-md transition-colors ${currentPage === totalPages
-            ? 'hidden'
-            : 'bg-gray-900 text-gray-200 hover:bg-gray-400 hover:text-black'
-            }`}
+          className={`px-4 py-2  ${currentPage === totalPages ? "hidden" : ""}`}
+          color="primary"
         >
           Next
-        </button>
+        </Button>
       </Link>
     </div>
   );

@@ -1,4 +1,5 @@
 import SponsorSaveButton from "@/app/components/SponsorSaveButton";
+import { Card, CardBody, CardFooter, CardHeader } from "@nextui-org/react";
 
 export const maxDuration = 60;
 
@@ -51,18 +52,23 @@ export default async function SponsorLayout({
 
   return (
     <>
-      <div className="border rounded-lg p-4 shadow-sm ">
-        <p className="font-bold text-xl mb-2">{`${sponsor?.role}. ${sponsor?.name} (${sponsor?.party})`}</p>
-        <p>
-          <strong>State:</strong> {params.state}
-        </p>
-        <p>
-          {" "}
-          <strong>District:</strong> {sponsor?.district}{" "}
-        </p>
-        <SponsorSaveButton sponsor={sponsor} />
-      </div>
-
+      <Card className="p-4">
+        <CardHeader>
+          <p className="font-bold text-xl mb-2">{`${sponsor?.role}. ${sponsor?.name} (${sponsor?.party})`}</p>
+        </CardHeader>
+        <CardBody>
+          <p>
+            <strong>State:</strong> {params.state}
+          </p>
+          <p>
+            {" "}
+            <strong>District:</strong> {sponsor?.district}{" "}
+          </p>
+        </CardBody>
+        <CardFooter>
+          <SponsorSaveButton sponsor={sponsor} />
+        </CardFooter>
+      </Card>
       <div className="p-4 bg-gray-200 min-h-screen">{children}</div>
     </>
   );
