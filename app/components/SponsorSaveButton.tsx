@@ -10,7 +10,7 @@ const SponsorSaveButton: FC<SaveButtonProps> = ({ sponsor }) => {
   const [savedSponsorId, setSavedSponsorId] = useState<number | null>(null);
   const [loading, setLoading] = useState(true);
   const [isProcessing, setIsProcessing] = useState(false);
-  console.log("sponsor from savebtn", sponsor);
+  // console.log("sponsor from savebtn", sponsor);
 
   const legiscanPeopleId = sponsor.people_id || sponsor.legiscanPeopleId;
 
@@ -20,7 +20,7 @@ const SponsorSaveButton: FC<SaveButtonProps> = ({ sponsor }) => {
 
     const fetchIsSaved = async () => {
       try {
-        console.log("sponsor btn useeffect", sponsor);
+        // console.log("sponsor btn useeffect", sponsor);
         const response = await fetch(
           `/api/sponsors/checkSavedSponsor?legiscanPeopleId=${legiscanPeopleId}`,
           { signal: abortController.signal }

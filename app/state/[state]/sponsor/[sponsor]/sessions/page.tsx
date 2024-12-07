@@ -50,21 +50,21 @@ export default async function Page({
   return (
     <>
       <div className="flex justify-center space-x-12 mb-10 text-lg">
-        <Link
+        {/* <Link
           href={`/state/${params.state}/sponsor/${sponsor.people_id}/bills`}
           as={NextLink}
           size="lg"
           color="foreground"
         >
           <p className=" cursor-pointer  font-semibold">Bills</p>
-        </Link>
+        </Link> */}
         <Link
           href={`/state/${params.state}/sponsor/${sponsor.people_id}/sessions`}
           as={NextLink}
           size="lg"
         >
-          <p className=" font-semibold text-blue-600 underline cursor-pointer">
-            Sessions
+          <p className=" font-semibold text-blue-600 text-2xl py-8 underline cursor-pointer">
+            Sponsor Sessions
           </p>
         </Link>
       </div>
@@ -83,10 +83,19 @@ export default async function Page({
                 </CardHeader>
                 <CardFooter>
                   <Link
-                    href={`/state/${params.state}/session/${session.session_id}`}
+                    href={`/state/${params.state}/sponsor/${params.sponsor}/sessions/${session.session_id}/bills`}
                     as={NextLink}
                   >
                     <p className="text-sm font-semibold leading-6">
+                      View Sponsor Bills
+                      <span aria-hidden="true">&rarr;</span>
+                    </p>
+                  </Link>
+                  <Link
+                    href={`/state/${params.state}/session/${session.session_id}`}
+                    as={NextLink}
+                  >
+                    <p className="text-sm font-semibold leading-6 pl-10">
                       View Session
                       <span aria-hidden="true">&rarr;</span>
                     </p>

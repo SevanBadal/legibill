@@ -82,7 +82,7 @@ const SavedSponsorsPage: FC = () => {
                       <Link
                         href={`/state/${
                           stateIdToAbbreviation[sponsor.stateId]
-                        }/sponsor/${sponsor.legiscanPeopleId}/bills`}
+                        }/sponsor/${sponsor.legiscanPeopleId}/sessions`}
                         as={NextLink}
                         size="md"
                       >
