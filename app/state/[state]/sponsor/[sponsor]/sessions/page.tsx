@@ -83,7 +83,7 @@ export default async function Page({
                 </CardHeader>
                 <CardFooter>
                   <Link
-                    href={`/state/${params.state}/sponsor/${params.sponsor}/sessions/bills/${session.session_id}`}
+                    href={`/state/${params.state}/sponsor/${params.sponsor}/sessions/${session.session_id}/bills`}
                     as={NextLink}
                   >
                     <p className="text-sm font-semibold leading-6">
