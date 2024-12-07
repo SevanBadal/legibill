@@ -10,7 +10,7 @@ async function getSponsorData(peopleId: number, retries = 3): Promise<any> {
   try {
     const res = await fetch(url);
     const data = await res.json();
-    console.log("Sponsor Data from getSponsorData:", data);
+    // console.log("Sponsor Data from getSponsorData:", data);
 
     if (data.status === "OK" && data.sponsoredbills) {
       return data;
@@ -46,9 +46,9 @@ export default async function SponsorLayout({
   params: { state: string; sponsor: string };
 }) {
   const sponsorData = await getSponsorData(Number(params.sponsor));
-  console.log("layout sponsordata", sponsorData);
+  // console.log("layout sponsordata", sponsorData);
   const sponsor = sponsorData?.sponsoredbills?.sponsor;
-  console.log("layout sponsor", sponsor);
+  // console.log("layout sponsor", sponsor);
 
   return (
     <>

@@ -83,7 +83,7 @@ export default async function Page({
                   <div className="flex space-x-10 my-4">
                     <SponsorSaveButton sponsor={sponsor} />
                     <Link
-                      href={`/state/${params.state}/sponsor/${sponsor.people_id}/bills`}
+                      href={`/state/${params.state}/sponsor/${sponsor.people_id}/sessions`}
                       as={NextLink}
                     >
                       <p className="text-blue-600 cursor-pointer font-semibold">
