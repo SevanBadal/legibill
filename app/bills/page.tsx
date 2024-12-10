@@ -1,7 +1,5 @@
-import transformData from "@/utilities/transformSearchResult";
 import getSearchBill from "@/data/getSearchBill";
-import Summary from "@/data/sessionSummary";
-import PaginationControls from "../../../../components/paginationControls";
+import transformData from "@/utilities/transformSearchResult";
 import NextLink from "next/link";
 import {
   Card,
@@ -10,65 +8,67 @@ import {
   CardHeader,
   Link,
 } from "@nextui-org/react";
+import PaginationControls from "@/app/components/paginationControls";
+import { useSearchParams } from "next/navigation";
 
-async function getSessionBills(
-  sessionID: any,
-  page: any
-): Promise<{ bills: getSearchBill[]; summary: Summary }> {
+async function getSearchData(
+  query: string,
+  page: any,
+  year?: string,
+  state?: string
+): Promise<any> {
+  const legiscanApiKey = process.env.LEGI_KEY;
+  const numericPage = Number(page);
+  const url = `https://api.legiscan.com/?key=${legiscanApiKey}&op=getSearch&query=${query}&state=${state}&year=${year}&page=${numericPage}`;
+
   try {
-    // Convert sessionID and page to numbers and validate
-    const numericSessionID = Number(sessionID);
-    const numericPage = Number(page);
-
-    // Check if sessionID is a valid number
-    if (isNaN(numericSessionID) || numericSessionID <= 0) {
-      console.error("Invalid session id:", sessionID);
-      throw new Error("Invalid session id");
-    }
-
-    // Check if page is a valid number
-    if (isNaN(numericPage) || numericPage <= 0) {
-      console.error("Invalid page:", page);
-      throw new Error("Invalid page");
-    }
-
-    console.log(
-      "Fetching data with sessionID:",
-      numericSessionID,
-      "and page:",
-      numericPage
-    );
-
-    const legiscanApiKey = process.env.LEGI_KEY;
-    if (!legiscanApiKey) {
-      throw new Error("LegiScan API key is missing");
-    }
-
-    const res = await fetch(
-      `https://api.legiscan.com/?key=${legiscanApiKey}&op=getSearch&id=${numericSessionID}&page=${numericPage}`
-    );
+    const res = await fetch(url);
     const data = await res.json();
 
-    const transformedData = transformData(data);
-    return transformedData; // Return the transformed data directly
-  } catch (error) {
-    console.error("Error fetching session bills:", error);
-    return { bills: [], summary: {} as Summary }; // Return empty data in case of error
+    if (data.status === "OK") {
+      const transformedData = transformData(data);
+      return transformedData;
+    }
+  } catch (error: any) {
+    console.error(`API Error for query ${query}:`);
+    return null;
   }
 }
 
-export default async function SessionBills({
-  params,
+export default async function BillSearchPage({
   searchParams,
 }: {
-  params: { session: number; state: string };
-  searchParams: { page: string };
+  searchParams: { query: string; state?: string; year?: string; page?: string };
 }) {
   const currentPage = parseInt(searchParams.page || "1", 10);
-  const { bills, summary } = await getSessionBills(params.session, currentPage);
+  const { bills, summary } = await getSearchData(
+    searchParams.query,
+    searchParams.page,
+    searchParams.year,
+    searchParams.state
+  );
+
+  const query = searchParams.query;
+  const state = searchParams.year;
+  const year = searchParams.state;
+
+  const params = new URLSearchParams();
+
+  if (query) params.append("query", query);
+  if (state) params.append("state", state);
+  if (year) params.append("year", year);
+
+  const queryString = params.toString();
+  console.log("queryString", queryString);
 
   return (
     <>
+      <h1 className="font-bold text-2xl">
+        Search Results for: {searchParams.query}
+      </h1>
+      <p className="mt-4">
+        {summary.count} bills, page {summary.page}
+      </p>
       <ul
         role="list"
         className="mt-3 grid grid-cols-1 gap-5 sm:grid-cols-2 sm:gap-6 lg:grid-cols-4"
@@ -83,6 +83,9 @@ export default async function SessionBills({
               </CardHeader>
               <CardBody>
                 <p className="line-clamp-1">
+                  <strong>State:</strong> {bill.state}
+                </p>
+                <p className="line-clamp-1">
                   <strong>Bill Number:</strong> {bill.bill_number}
                 </p>
                 <p className="line-clamp-1">
@@ -94,7 +97,7 @@ export default async function SessionBills({
 
                 <CardFooter className="mt-6 border-t border-gray-900/5 px-3 py-3">
                   <Link
-                    href={`/state/${params.state}/session/${params.session}/bill/${bill.bill_id}/history`}
+                    href={`/state/${bill.state}/session/${bill.session}/bill/${bill.bill_id}/history`}
                     as={NextLink}
                   >
                     <p className="text-sm font-semibold leading-6 ">
@@ -111,6 +114,7 @@ export default async function SessionBills({
       <PaginationControls
         currentPage={currentPage}
         totalPages={summary.page_total}
+        queryParams={queryString}
       />
     </>
   );
