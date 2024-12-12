@@ -14,16 +14,6 @@ import {
 import { useRouter } from "next/navigation";
 import { Form } from "@nextui-org/form";
 
-const currentYear = new Date().getFullYear();
-
-export const years = Array.from(
-  { length: currentYear + 2 - 2009 },
-  (_, index) => {
-    const year = currentYear + 1 - index;
-    return { key: year.toString(), label: year.toString() };
-  }
-);
-
 export default function Home() {
   const router = useRouter();
   const [filter, setFilter] = useState("");
@@ -32,6 +22,13 @@ export default function Home() {
     query: "",
     state: "",
     year: "",
+  });
+
+  const currentYear = new Date().getFullYear();
+
+  const years = Array.from({ length: currentYear + 2 - 2009 }, (_, index) => {
+    const year = currentYear + 1 - index;
+    return { key: year.toString(), label: year.toString() };
   });
 
   const handleFilterChange = (event: any) => {
