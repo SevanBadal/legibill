@@ -6,29 +6,29 @@ import { Button } from "@nextui-org/react";
 const PaginationControls: FC<PaginationControlsProps> = ({
   currentPage,
   totalPages,
+  queryParams,
 }) => {
+  console.log("pagination params", queryParams);
+
   return (
     <div className="pagination-controls flex justify-center items-center mt-10 mb-10 space-x-12">
-      <Link href={`?page=${currentPage - 1}`}>
-        <button
+      <Link href={`?${queryParams}&page=${currentPage - 1}`}>
+        <Button
           disabled={currentPage === 1}
-          className={`px-4 py-2 rounded-md transition-colors ${
-            currentPage === 1
-              ? "hidden"
-              : "bg-gray-900 text-gray-200 hover:bg-gray-400 hover:text-black"
-          }`}
+          color="primary"
+          className={`px-4 py-2 ${currentPage === 1 ? "hidden" : ""}`}
         >
           Previous
-        </button>
+        </Button>
       </Link>
       <span>
         Page {currentPage} of {totalPages}
       </span>
-      <Link href={`?page=${currentPage + 1}`}>
+      <Link href={`?${queryParams}&page=${currentPage + 1}`}>
         <Button
           disabled={currentPage === totalPages}
-          className={`px-4 py-2  ${currentPage === totalPages ? "hidden" : ""}`}
           color="primary"
+          className={`px-4 py-2  ${currentPage === totalPages ? "hidden" : ""}`}
         >
           Next
         </Button>
