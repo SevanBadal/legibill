@@ -10,6 +10,7 @@ import {
   Button,
   Select,
   SelectItem,
+  SharedSelection,
 } from "@nextui-org/react";
 import { useRouter } from "next/navigation";
 import { Form } from "@nextui-org/form";
@@ -18,15 +19,19 @@ export default function Home() {
   const router = useRouter();
   const [filter, setFilter] = useState("");
   const [filteredStates, setFilteredStates] = useState(states);
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<{
+    query: string;
+    state: string[];
+    year: string;
+  }>({
     query: "",
-    state: "",
+    state: [],
     year: "",
   });
 
   const currentYear = new Date().getFullYear();
 
-  const years = Array.from({ length: currentYear + 2 - 2009 }, (_, index) => {
+  const years = Array.from({ length: currentYear + 2 - 2010 }, (_, index) => {
     const year = currentYear + 1 - index;
     return { key: year.toString(), label: year.toString() };
   });
@@ -41,7 +46,7 @@ export default function Home() {
     setFilteredStates(filtered);
   };
 
-  const handleQueryChange = (type: string, value: string) => {
+  const handleQueryChange = (type: string, value: string | string[]) => {
     setFormData((prevData) => {
       return {
         ...prevData,
@@ -50,12 +55,22 @@ export default function Home() {
     });
   };
 
+  const handleStateSelection = (value: SharedSelection) => {
+    if (typeof value === "string") {
+      const selectedStates = value.split(",").map((v) => v.trim());
+      handleQueryChange("state", selectedStates);
+    } else if (value instanceof Set) {
+      const selectedStates = Array.from(value).map((val) => val.toString());
+      handleQueryChange("state", selectedStates);
+    }
+  };
+
   const handleSearch = (event: React.FormEvent) => {
     event.preventDefault();
     const params = new URLSearchParams();
 
     if (formData.query) params.append("query", formData.query);
-    if (formData.state) params.append("state", formData.state);
+    formData.state.forEach((st) => params.append("state", st));
     if (formData.year) params.append("year", formData.year);
 
     const queryString = params.toString();
@@ -83,12 +98,11 @@ export default function Home() {
         />
         <Select
           className="max-w-xs"
-          label="Select a state"
+          label="Select state(s)"
           radius="lg"
           items={states}
-          onSelectionChange={(value) =>
-            handleQueryChange("state", value.currentKey?.toString() || "")
-          }
+          selectionMode="multiple"
+          onSelectionChange={handleStateSelection}
           popoverProps={{
             classNames: {
               content: "max-h-64",
