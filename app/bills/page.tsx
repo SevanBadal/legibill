@@ -47,11 +47,7 @@ export default async function BillSearchPage({
     searchParams.state
   );
 
-  console.log("bills", bills);
-
-  const query = searchParams.query;
-  const state = searchParams.state;
-  const year = searchParams.year;
+  const { query, state, year } = searchParams;
 
   const params = new URLSearchParams();
 
@@ -62,8 +58,6 @@ export default async function BillSearchPage({
 
     if (Array.isArray(state)) {
       states = state;
-    } else {
-      states = state.split(",");
     }
 
     states.forEach((st) => {
@@ -72,7 +66,6 @@ export default async function BillSearchPage({
   }
 
   const queryString = params.toString();
-  console.log("queryString", queryString);
 
   return (
     <>
